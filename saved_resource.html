@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js" crossorigin=""></script>
+    
+    
+<script src="https://assets.editor.p5js.org/5f5743d1947398002452a262/96df6466-846a-487f-8d1b-96aa6f12194c.js" crossorigin=""></script>
+        <script src="https://assets.editor.p5js.org/5f5743d1947398002452a262/bd5a936e-503f-44ef-80a9-eb2e3a2573c4.js" crossorigin=""></script>
+  <!--<base href="https://editor.p5js.org/111student/sketches/hFYW8SN9x/">--><base href="."><style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+</style><script src="https://editor.p5js.org/previewScripts.js"></script><style data-emotion=""></style><script>
+    function getScriptOff(line) {
+      var offs = [[71,"sketch"]];
+      var l = 0;
+      var file = '';
+      for (var i=0; i<offs.length; i++) {
+        var n = offs[i][0];
+        if (n < line && n > l) {
+          l = n;
+          file = offs[i][1];
+        }
+      }
+      return [line - l, file];
+    }
+    // catch reference errors, via http://stackoverflow.com/a/12747364/2994108
+    window.onerror = function (msg, url, lineNumber, columnNo, error) {
+        var string = msg.toLowerCase();
+        var substring = "script error";
+        var data = {};
+        if (url.match(/^(http:\/\/|https:\/\/)/) !== null && error.stack){
+          var errorNum = error.stack.split('about:srcdoc:')[1].split(':')[0];
+          var fileInfo = getScriptOff(errorNum);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        } else {
+          var fileInfo = getScriptOff(lineNumber);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        }
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      return false;
+    };
+    // catch rejected promises
+    window.onunhandledrejection = function (event) {
+      if (event.reason && event.reason.message && event.reason.stack){
+        var errorNum = event.reason.stack.split('about:srcdoc:')[1].split(':')[0];
+        var fileInfo = getScriptOff(errorNum);
+        var data = event.reason.message + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      }
+    };
+  </script></head>
+  <body>
+    <script data-tag="@fs-sketch.js">var path,boy,cash,diamonds,jwellery,sword;
+var pathImg,boyImg,cashImg,diamondsImg,jwelleryImg,swordImg;
+var treasureCollection = 0;
+var cashG,diamondsG,jwelleryG,swordGroup;
+
+
+var PLAY=1;
+var END=0;
+var gameState=1;
+
+function preload(){
+  pathImg = loadImage("https://assets.editor.p5js.org/5f5743d1947398002452a262/dc7953a1-a25d-4b76-89e8-14932bc423fc.png");
+  boyImg = loadAnimation("https://assets.editor.p5js.org/5f5743d1947398002452a262/3c7b86c6-0bbd-4f3e-9379-1309245fdc31.png","https://assets.editor.p5js.org/5f5743d1947398002452a262/e47c8ffc-7961-4db3-9580-f87d37b0db36.png");
+  cashImg = loadImage("https://assets.editor.p5js.org/5f5743d1947398002452a262/acd4d318-e66f-4bc6-84d4-287f4d739485.png");
+  diamondsImg = loadImage("https://assets.editor.p5js.org/5f5743d1947398002452a262/a3693a14-c2c1-41cc-8a02-e8a8f0365fdc.png");
+  jwelleryImg = loadImage("https://assets.editor.p5js.org/5f5743d1947398002452a262/1a848099-e795-4d2d-843f-ba1ef07ff25b.png");
+  swordImg = loadImage("https://assets.editor.p5js.org/5f5743d1947398002452a262/f2c49662-1e8c-4573-9179-5990193f3c6f.png");
+  endImg =loadAnimation("https://assets.editor.p5js.org/5f5743d1947398002452a262/4a6d94a2-b984-4a04-b132-e5debfa144d8.png");
+}
+
+function setup(){
+
+    createCanvas(windowWidth,windowHeight);
+
+path=createSprite(width/2,200);
+path.addImage(pathImg);
+path.velocityY = 4;
+
+
+
+boy = createSprite(width/2,height-20,20,20);
+boy.addAnimation("SahilRunning",boyImg);
+boy.scale=0.08;
+
+
+    cashG=new Group();
+diamondsG=new Group();
+jwelleryG=new Group();
+swordGroup=new Group();
+
+}
+
+function draw() {
+
+  if(gameState===PLAY){
+  background(0);
+  boy.x = World.mouseX;
+
+    edges= createEdgeSprites();
+  boy.collide(edges);
+
+
+  if(path.y > height ){
+    path.y = height/2;
+  }
+
+      createCash();
+    createDiamonds();
+    createJwellery();
+    createSword();
+
+    if (cashG.isTouching(boy)) {
+      cashG.destroyEach();
+      treasureCollection=treasureCollection + 50;
+    }
+    else if (diamondsG.isTouching(boy)) {
+      diamondsG.destroyEach();
+      treasureCollection=treasureCollection + 100;
+
+          }else if(jwelleryG.isTouching(boy)) {
+      jwelleryG.destroyEach();
+      treasureCollection= treasureCollection + 150;
+
+          }else{
+      if(swordGroup.isTouching(boy)) {
+        gameState=END;
+
+                boy.addAnimation("SahilRunning",endImg);
+        boy.x=width/2;
+        boy.y=height/2;
+        boy.scale=0.6;
+
+                cashG.destroyEach();
+        diamondsG.destroyEach();
+        jwelleryG.destroyEach();
+        swordGroup.destroyEach();
+
+                cashG.setVelocityYEach(0);
+        diamondsG.setVelocityYEach(0);
+        jwelleryG.setVelocityYEach(0);
+        swordGroup.setVelocityYEach(0);
+
+         }
+  }
+
+    drawSprites();
+  textSize(20);
+  fill(255);
+  text("Treasure: "+ treasureCollection,width-150,30);
+  }
+
+}
+
+function createCash() {
+  if (World.frameCount % 200 == 0) {
+  var cash = createSprite(Math.round(random(50, width-50),40, 10, 10));
+  cash.addImage(cashImg);
+  cash.scale=0.12;
+  cash.velocityY = 3;
+  cash.lifetime = 150;
+  cashG.add(cash);
+  }
+}
+
+function createDiamonds() {
+  if (World.frameCount % 320 == 0) {
+  var diamonds = createSprite(Math.round(random(50, width-50),40, 10, 10));
+  diamonds.addImage(diamondsImg);
+  diamonds.scale=0.03;
+  diamonds.velocityY = 3;
+  diamonds.lifetime = 180;
+  diamondsG.add(diamonds);
+}
+}
+
+function createJwellery() {
+  if (World.frameCount % 410 == 0) {
+  var jwellery = createSprite(Math.round(random(50, width-50),40, 10, 10));
+  jwellery.addImage(jwelleryImg);
+  jwellery.scale=0.13;
+  jwellery.velocityY = 3;
+  jwellery.lifetime = 180;
+  jwelleryG.add(jwellery);
+  }
+}
+
+function createSword(){
+  if (World.frameCount % 530 == 0) {
+  var sword = createSprite(Math.round(random(50, width-50),40, 10, 10));
+  sword.addImage(swordImg);
+  sword.scale=0.1;
+  sword.velocityY = 3;
+  sword.lifetime = 180;
+  swordGroup.add(sword);
+  }
+}</script>
+  
+
+<main><canvas id="defaultCanvas0" class="p5Canvas" width="669" height="489" style="width: 669px; height: 489px;"></canvas></main></body></html>
